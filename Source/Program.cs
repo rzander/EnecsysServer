@@ -70,15 +70,18 @@ namespace ConsoleApplication1
                                             {
                                                 int _bytesReaded = networkStream.Read(readBuffer, 0, tcpClient.Available);
                                                 string sout = (ASCIIEncoding.ASCII.GetString(readBuffer, 0, _bytesReaded).Replace((char)7, '?'));
-                                                string sCode = sout.Substring(18);
-                                                if (sCode.StartsWith("WS="))
+                                                if (sout.Length > 18)
                                                 {
-                                                    try
+                                                    string sCode = sout.Substring(18);
+                                                    if (sCode.StartsWith("WS="))
                                                     {
-                                                        EnecsysData EDs = new EnecsysData(sCode);
-                                                        Console.WriteLine("Date:" + DateTime.Now.ToString("HH:mm:ss") + ", Panel:" + EDs.SystemID + ", Power:" + EDs.ACPowerW + "W");
+                                                        try
+                                                        {
+                                                            EnecsysData EDs = new EnecsysData(sCode);
+                                                            Console.WriteLine("Date:" + DateTime.Now.ToString("HH:mm:ss") + ", Panel:" + EDs.SystemID + ", Power:" + EDs.ACPowerW + "W");
+                                                        }
+                                                        catch { }
                                                     }
-                                                    catch { }
                                                 }
                                             }
                                             catch { }
